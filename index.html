@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Engine</title>
+    <style>
+        :root {
+            --primary-color: #007BFF;
+            --accent-color: #0056b3;
+            --danger-color: #dc3545;
+            --light-bg-color: #f3f4f6;
+            --dark-bg-color: #ffffff;
+            --dark-text: #333;
+            --light-text: #777;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--light-bg-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: var(--dark-text);
+        }
+
+        .container {
+            background-color: var(--dark-bg-color);
+            padding: 40px;
+            width: 400px;
+            border-radius: 15px;
+            box-shadow: 0 8px 24px var(--shadow-color);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+
+        h2 {
+            font-size: 20px;
+            color: var(--dark-text);
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+        }
+
+        button:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .clear-history {
+            background-color: var(--danger-color);
+            margin-top: 15px;
+        }
+
+        .clear-history:hover {
+            background-color: #c82333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        li {
+            background-color: var(--light-bg-color);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--light-text);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        li:hover {
+            background-color: #e9ecef;
+            transform: scale(1.03);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Search Engine</h1>
+    <input type="text" id="searchQuery" placeholder="Enter your search term">
+    <button onclick="performSearch()">Search</button>
+
+    <h2>Search History</h2>
+    <ul id="historyList"></ul>
+    <button class="clear-history" onclick="clearHistory()">Clear History</button>
+</div>
+
+<script>
+    function loadHistory() {
+        let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+        let historyList = document.getElementById('historyList');
+        historyList.innerHTML = '';
+
+        history.forEach(function(item) {
+            let li = document.createElement('li');
+            li.innerText = item;
+            historyList.appendChild(li);
+        });
+    }
+
+    function performSearch() {
+        let query = document.getElementById('searchQuery').value;
+        if (!query) return;
+
+        let history = JSON.parse(localStorage.getItem('searchHistory')) || [];
+        history.push(query);
+        localStorage.setItem('searchHistory', JSON.stringify(history));
+
+        document.getElementById('searchQuery').value = '';
+        loadHistory();
+    }
+
+    function clearHistory() {
+        localStorage.removeItem('searchHistory');
+        loadHistory();
+    }
+
+    window.onload = loadHistory;
+</script>
+
+</body>
+</html>
